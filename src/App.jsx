@@ -1,10 +1,12 @@
 
 import './App.css'
 
+
 function App() {
+  console.log(import.meta.env.VITE_APPWRITE_URL)
 
 
-  return (
+  return ( 
     <>
    <h1>hello guys testing project</h1>
     </>
