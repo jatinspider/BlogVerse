@@ -8,31 +8,53 @@ export class Service {
 
   constructor(){
     this.client
-    .setEndpoint(conf.appwriteProjectID)
+    .setEndpoint(conf.appwriteUrl)
     .setProject(conf.appwriteProjectID);
     this.databases = new Databases(this.client);
     this.storage = new Storage(this.client);
   }
-
-  async createPost({title,slug,content,featuredImage,status,userId}){
+  
+async createPost({title, slug, content, featuredImage, status, userId}) {
     try {
-        return await this.databases.createDocument(
-            conf.appwriteDatabaseID,
-            conf.appwriteCollectionID,
-            slug,
-            {
-                title,
-                content,
-                featuredImage,
-                status,
-                userId,
-            }
-        )
+      console.log("Creating post with data:", {title, slug, content, featuredImage, status, userId});
+      return await this.databases.createDocument(
+        conf.appwriteDatabaseID,
+        conf.appwriteCollectionID,
+        slug,
+        {
+          title,
+          content,
+          featuredImage,
+          status,
+          userId,
+        }
+      );
     } catch (error) {
-        console.log("appwrite service error in Creating Post",error)
-        return false;
+      console.log("appwrite service error in Creating Post", error);
+      return false;
     }
   }
+  
+  async updatePost(slug, {title, content, featuredImage, status}) {
+    try {
+      console.log("Updating post with data:", {slug, title, content, featuredImage, status});
+      return await this.databases.updateDocument(
+        conf.appwriteDatabaseID,
+        conf.appwriteCollectionID,
+        slug,
+        {
+          title,
+          content,
+          featuredImage,
+          status,
+        }
+      );
+    } catch (error) {
+      console.log("appwrite service error in updating Post", error);
+      return false;
+    }
+  }
+  
   async updatePost(slug,{title,content,featuredImage,status}){
     try {
         return await this.databases.updateDocument(
