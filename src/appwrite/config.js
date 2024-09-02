@@ -55,26 +55,6 @@ async createPost({title, slug, content, featuredImage, status, userId}) {
     }
   }
   
-  async updatePost(slug,{title,content,featuredImage,status}){
-    try {
-        return await this.databases.updateDocument(
-            conf.appwriteDatabaseID,
-            conf.appwriteCollectionID,
-            slug,
-            {
-                title,
-                content,
-                featuredImage,
-                status,
-              
-            }
-        );
-    } catch (error) {
-        console.log("appwrite service error in updating File",error)
-        return false;
-    }
-  }
-
   async deletePost(slug){
     try {
         await this.databases.deleteDocument(
@@ -115,7 +95,7 @@ async createPost({title, slug, content, featuredImage, status, userId}) {
     }
   }
 
-  //file upload service
+  
   async uploadFile(file){
     try {
         return await this.storage.createFile(

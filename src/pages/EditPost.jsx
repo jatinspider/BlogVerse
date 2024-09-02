@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from "react";
 import appwriteService from "../appwrite/config";
-import { Container, PostCard, PostForm } from "../components";
+import { Container, PostForm } from "../components";
 import { useNavigate, useParams } from "react-router-dom";
 
 function EditPost() {
   const [post, setPost] = useState(null);
   const { slug } = useParams();
-  navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (slug) {
-      appwriteService.getAllPosts(slug).then((post) => {
-        if (post) {
-          setPost(post);
-        }
-      });
-    } else navigate("/");
+      appwriteService
+        .getPost(slug)
+        .then((post) => {
+          if (post) {
+            setPost(post);
+          } else navigate("/");
+        })
+        .catch((error) => {
+          console.error("Error fetching post:", error);
+          navigate("/");
+        });
+    } else {
+      navigate("/");
+    }
   }, [slug, navigate]);
 
   return post ? (
@@ -24,7 +32,7 @@ function EditPost() {
         <PostForm post={post} />
       </Container>
     </div>
-  ) : null
+  ) : null;
 }
 
 export default EditPost;

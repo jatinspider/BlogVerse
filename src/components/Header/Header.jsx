@@ -38,36 +38,34 @@ function Header() {
 
   
  return (
-    <header className='py-3 shadow bg-gray-500'>
-      <Container>
-        <nav className='flex'>
-          <div className='mr-4'>
-            <Link to='/'>
-              <Logo width='70px'   />
-
-              </Link>
-          </div>
-          <ul className='flex ml-auto'>
-            {navItems.map((item) => 
+  <header className='bg-gray-800 py-4 shadow-lg'>
+  <Container>
+    <nav className='flex items-center justify-between'>
+      <div className='flex items-center space-x-4'>
+        <Link to='/'>
+          <Logo width='70px' />
+        </Link>
+        <ul className='hidden md:flex space-x-6'>
+          {navItems.map((item) =>
             item.active ? (
               <li key={item.name}>
                 <button
-                onClick={() => navigate(item.slug)}
-                className='inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full'
-                >{item.name}</button>
+                  onClick={() => navigate(item.slug)}
+                  className='text-white px-4 py-2 rounded-lg transition-transform transform hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
+                >
+                  {item.name}
+                </button>
               </li>
             ) : null
-            )}
-            {authStatus && (
-              <li>
-                <Logoutbtn />
-              </li>
-            )}
-          </ul>
-        </nav>
-        </Container>
-    </header>
-  )
+          )}
+        </ul>
+      </div>
+      {authStatus && (
+        <Logoutbtn className='text-white bg-red-600 px-4 py-2 rounded-lg hover:bg-red-700 transition-colors' />
+      )}
+    </nav>
+  </Container>
+</header>
+)
 }
-
 export default Header
