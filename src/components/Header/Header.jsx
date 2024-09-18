@@ -67,7 +67,7 @@
   //     </nav>
   //   </Container>
   // </header>
-  <header className='bg-[#002C54] py-4 shadow-lg'>
+  <header className='bg-[#002C54] py-4 shadow-lg fixed top-0 w-full z-40'>
       <Container>
         <nav className='flex items-center justify-between relative'>
           <div className='flex items-center justify-between w-full md:w-auto'>
@@ -85,7 +85,7 @@
           </div>
 
           <ul
-            className={`absolute top-full left-0 w-full bg-[#002C54] md:static md:flex md:space-x-4 md:bg-transparent transition-transform transform ${isMenuOpen ? 'block' : 'hidden'}`}
+            className={`absolute top-full left-0 w-full bg-[#002C54] md:static md:flex md:space-x-4 md:bg-transparent transition-transform transform ${isMenuOpen ? 'block' : 'hidden'} `}
           >
             <li className='md:hidden flex justify-end'>
               <button
