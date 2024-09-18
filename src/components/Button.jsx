@@ -1,6 +1,6 @@
 import React from 'react'
 
-function Button({children ,type='button',bgColor= 'bg-blue-800',textcolor='text-white',
+function Button({children ,type='button',bgColor= 'bg-[#002C54]',textcolor='text-white',
 className = "",
 ...props
 }) {

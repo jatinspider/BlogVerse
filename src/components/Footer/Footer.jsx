@@ -5,7 +5,7 @@ import Logo from '../Logo'
 
 function Footer() {
   return (
-    <footer className='bg-gray-800 text-white py-6'>
+    <footer className='bg-[#002C54] text-white py-6'>
     <Container>
       <div className='flex flex-col md:flex-row justify-between'>
         {/* About Section */}

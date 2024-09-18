@@ -30,15 +30,15 @@ function AllPosts() {
   return (
     <div className="py-8 w-full">
       <Container>
-        <div className="flex flex-wrap">
+        <div className="columns-1 sm:columns-2 md:columns-3  gap-4">
           {posts.length > 0 ? (
             posts.map((post) => (
-              <div key={post.$id} className="w-1/4 p-2">
-                <PostCard $id={post.$id} title={post.title} featuredImage={post.featuredImage} />
+              <div key={post.$id} className="break-inside-avoid mb-4 bg-white shadow-lg rounded-lg overflow-hidden">
+                <PostCard {...post} />
               </div>
             ))
           ) : (
-            <div>No posts available.</div> 
+            <div>No posts available.</div>
           )}
         </div>
       </Container>

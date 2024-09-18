@@ -9,12 +9,12 @@ function Home() {
     appwriteService.getAllPosts([]).then((posts) => {
       if (posts) {
         const usersPosts = posts.documents.filter(
-          (post) => post.userId === userData.$id
+          (post) => post.userId === userData?.$id
         );
         setPosts(usersPosts);
       }
     });
-  }, [ [userData]]);
+  }, [ userData]);
 
   if (posts.length === 0) {
     return (
@@ -34,9 +34,9 @@ function Home() {
   return (
     <div className="w-full py-8">
       <Container>
-        <div className="flex flex-wrap">
+      <div className="columns-1 sm:columns-2 md:columns-3  gap-4">
           {posts.map((post) => (
-            <div key={post.$id} className="p-2 w-1/4">
+            <div key={post.$id} className="break-inside-avoid mb-4 bg-white shadow-lg rounded-lg overflow-hidden">
               <PostCard {...post} />
             </div>
           ))}
