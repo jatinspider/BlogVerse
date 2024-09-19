@@ -1,5 +1,5 @@
   import React, { useState } from 'react'
-  import {Container,Logoutbtn,Logo} from "../index"
+  import {Container,Logoutbtn,LogoComponenet} from "../index"
   import { Link, useNavigate } from 'react-router-dom'
   import { useSelector } from 'react-redux'
 
@@ -72,7 +72,7 @@
         <nav className='flex items-center justify-between relative'>
           <div className='flex items-center justify-between w-full md:w-auto'>
             <Link to='/'>
-              <Logo width='70px' />
+              <LogoComponenet width='70px' />
             </Link>
             <button
               className='md:hidden text-[#C5001A]'

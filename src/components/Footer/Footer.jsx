@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Container from '../container/Container'
-import Logo from '../Logo'
+import Logo from '../LogoComponenet'
 
 function Footer() {
   return (
