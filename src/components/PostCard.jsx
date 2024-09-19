@@ -3,20 +3,31 @@ import appwriteService from "../appwrite/config";
 import { Link } from "react-router-dom";
 
 function PostCard({ $id, title, featuredImage }) {
-
-  const imageUrl = featuredImage ? appwriteService.getFilePreview(featuredImage) : '';
+  const imageUrl = featuredImage
+    ? appwriteService.getFilePreview(featuredImage)
+    : "";
 
   return (
     <Link to={`/post/${$id}`}>
-      <div className="w-full bg-gray-100 rounded-xl p-4">
-        <div className="w-full justify-center mb-4">
-          {imageUrl ? (
-            <img src={imageUrl} alt={title} className="rounded-xl" />
-          ) : (
-            <div className="placeholder w-full h-32 bg-gray-300 rounded-xl"></div> 
-          )}
+      <div className="bg-white rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden">
+        {imageUrl ? (
+          <img
+            src={imageUrl}
+            alt={title}
+            className="w-full object-cover"
+            
+          />
+        ) : (
+          <div className="w-full h-48 bg-gray-300 flex items-center justify-center text-gray-600">
+            <span className="text-sm font-medium">No Image Available</span>
+          </div>
+        )}
+        <div className="p-4">
+          <h2 className="text-xl font-semibold text-gray-800 mb-2 hover:text-red-500 transition-colors duration-300">
+            {title}
+          </h2>
+          <p className="text-gray-600 text-sm">Read more...</p>
         </div>
-        <h2 className="text-xl font-bold">{title}</h2>
       </div>
     </Link>
   );
