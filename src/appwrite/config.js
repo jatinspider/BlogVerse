@@ -14,9 +14,9 @@ export class Service {
     this.storage = new Storage(this.client);
   }
   
-async createPost({title, slug, content, featuredImage, status, userId}) {
+async createPost({title, slug, content, featuredImage, status, userId,userName,createdAt}) {
     try {
-      console.log("Creating post with data:", {title, slug, content, featuredImage, status, userId});
+      console.log("Creating post with data:", {title, slug, content, featuredImage, status, userId,userName,createdAt});
       return await this.databases.createDocument(
         conf.appwriteDatabaseID,
         conf.appwriteCollectionID,
@@ -27,6 +27,8 @@ async createPost({title, slug, content, featuredImage, status, userId}) {
           featuredImage,
           status,
           userId,
+          userName,
+          createdAt,
         }
       );
     } catch (error) {
@@ -35,9 +37,9 @@ async createPost({title, slug, content, featuredImage, status, userId}) {
     }
   }
   
-  async updatePost(slug, {title, content, featuredImage, status}) {
+  async updatePost(slug, {title, content, featuredImage, status,createdAt}) {
     try {
-      console.log("Updating post with data:", {slug, title, content, featuredImage, status});
+      console.log("Updating post with data:", {slug, title, content, featuredImage, status,});
       return await this.databases.updateDocument(
         conf.appwriteDatabaseID,
         conf.appwriteCollectionID,
@@ -47,6 +49,7 @@ async createPost({title, slug, content, featuredImage, status, userId}) {
           content,
           featuredImage,
           status,
+          createdAt,
         }
       );
     } catch (error) {
@@ -81,20 +84,33 @@ async createPost({title, slug, content, featuredImage, status, userId}) {
         return false
     }
   }
-  async getAllPosts(queries=[Query.equal("status","active")]){
+  // async getAllPosts(queries=[Query.equal("status","active")]){
+  //   try {
+  //       return await this.databases.listDocuments(
+  //           conf.appwriteDatabaseID,
+  //           conf.appwriteCollectionID,
+  //           queries,
+  //           );
+  //   } catch (error) {
+  //       console.log("appwrite service error in getAllPosts",error)  ;
+  //       return false
+  //   }
+  // }
+  
+  async getAllPosts(queries = [Query.equal("status", "active"),Query.limit(50)]) {
     try {
-        return await this.databases.listDocuments(
-            conf.appwriteDatabaseID,
-            conf.appwriteCollectionID,
-            queries,
-
-            );
+      return await this.databases.listDocuments(
+        conf.appwriteDatabaseID,
+        conf.appwriteCollectionID,
+        queries, 
+      );
     } catch (error) {
-        console.log("appwrite service error in getAllPosts",error)  ;
-        return false
+      console.log("Appwrite service error in getAllPosts", error);
+      return false;
     }
   }
-
+  //increased post limit to 50
+  
   
   async uploadFile(file){
     try {

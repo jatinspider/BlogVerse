@@ -12,13 +12,14 @@ function AllPosts() {
         const response = await appwriteService.getAllPosts();
         if (response && response.documents) {
           setPosts(response.documents);
+          console.log("Fetched posts:", response.documents);
         } else {
           console.error("Failed to fetch posts: No documents found.");
         }
       } catch (error) {
         console.error("Error fetching posts:", error);
       } finally {
-        setLoading(false); // 
+        setLoading(false); 
       }
     };
 
@@ -47,6 +48,4 @@ function AllPosts() {
 }
 
 export default AllPosts;
-
-
 

@@ -16,12 +16,13 @@ function Home() {
       }
 
       try {
-        const postsResponse = await appwriteService.getAllPosts([]);
+        const postsResponse = await appwriteService.getAllPosts();
         if (postsResponse) {
           const usersPosts = postsResponse.documents.filter(
             (post) => post.userId === userData.$id
           );
           setPosts(usersPosts);
+          console.log("Fetched posts:", postsResponse.documents);
         }
       } catch (err) {
         console.error("Error fetching posts:", err);
