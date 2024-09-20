@@ -1,12 +1,15 @@
-import React, { useState } from "react";
 import { Container, Logoutbtn, LogoComponenet } from "../index";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { useState } from "react";
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
+  const userData = useSelector((state) => state.auth.userData); // Get userData from Redux
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // To manage dropdown state
 
   const navItems = [
     {
@@ -36,35 +39,12 @@ function Header() {
     },
   ];
 
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   return (
-    //   <header className='bg-[#002C54] py-4 shadow-lg'>
-    //   <Container>
-    //     <nav className='flex items-center justify-between'>
-    //       <div className='flex items-center space-x-4'>
-    //         <Link to='/'>
-    //           <Logo width='70px' />
-    //         </Link>
-    //         <ul className='hidden md:flex space-x-6'>
-    //           {navItems.map((item) =>
-    //             item.active ? (
-    //               <li key={item.name}>
-    //                 <button
-    //                   onClick={() => navigate(item.slug)}
-    //                   className='text-[#C5001A] px-4 py-2 rounded-lg transition-transform transform hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500'
-    //                 >
-    //                   {item.name}
-    //                 </button>
-    //               </li>
-    //             ) : null
-    //           )}
-    //         </ul>
-    //       </div>
-    //       {authStatus && (
-    //         <Logoutbtn/>
-    //       )}
-    //     </nav>
-    //   </Container>
-    // </header>
     <header className="bg-[#002C54] py-4 shadow-lg fixed top-0 w-full z-40">
       <Container>
         <nav className="flex items-center justify-between relative">
@@ -93,6 +73,7 @@ function Header() {
             </button>
           </div>
 
+          {/* Navigation Links */}
           <ul
             className={`absolute top-full left-0 w-full bg-[#002C54] md:static md:flex md:space-x-4 md:bg-transparent transition-transform transform ${
               isMenuOpen ? "block" : "hidden"
@@ -122,15 +103,12 @@ function Header() {
             {navItems.map((item) =>
               item.active ? (
                 <li key={item.name} className="flex">
-                  {/* <button
+                  <button
                     onClick={() => navigate(item.slug)}
-                    className='text-[#C5001A] px-2 py-1 text-xs sm:px-4 sm:py-2 sm:text-base rounded-lg transition-transform transform hover:bg-[#1a4266] focus:outline-none focus:ring-2 focus:ring-blue-500'
+                    className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                   >
-                    {item.name}
-                  </button>  added new buttons */} 
-                  <button onClick={() => navigate(item.slug)} className="relative inline-flex flex-shrink-1 items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-[#083c69] rounded-md group-hover:bg-opacity-0">
-                    {item.name}
+                      {item.name}
                     </span>
                   </button>
                 </li>
@@ -138,10 +116,42 @@ function Header() {
             )}
           </ul>
 
-          {authStatus && <Logoutbtn />}
+          {/* User Profile Dropdown */}
+          {authStatus && userData && (
+            <div className="relative">
+              {/* Round button with first letter of username */}
+              <button
+                className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white text-xl hover:bg-pink-950"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                {userData.name.charAt(0).toUpperCase()}
+              </button>
+
+              {/* Dropdown Menu */}
+              {isDropdownOpen && (
+                <ul className="absolute right-0 mt-1 w-48 bg-white text-black rounded-lg shadow-lg z-10">
+                  <li className="p-2 font-semibold text-start hover:bg-slate-400 w-full">
+                     {userData.name}
+                  </li>
+                    <li className="p-2 font-semibold text-gray-600 text-start hover:bg-slate-400">
+                     {userData.email}
+                    </li>
+                  <li className="border-t border-gray-200">
+                    <Logoutbtn/>
+                  </li>
+                </ul>
+              )}
+            </div>
+          )}
+
+         
         </nav>
       </Container>
     </header>
   );
 }
+
 export default Header;
+
+
+

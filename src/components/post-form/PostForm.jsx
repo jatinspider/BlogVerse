@@ -161,7 +161,7 @@ function PostForm({ post }) {
         // Update post with new data
         const dbpost = await appwriteService.updatePost(post.$id, {
           ...data,
-          createdAt: new Date().toLocaleString("en-GB", { timeZone: "UTC" }), // 
+          createdAt: new Date().toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }), // 
           // userName: userData.name, 
         });
         if (dbpost) {
@@ -172,7 +172,7 @@ function PostForm({ post }) {
         const fileId = fileResponse ? fileResponse.$id : null;
         const dbPost = await appwriteService.createPost({
           ...data,
-          createdAt: new Date().toLocaleString("en-GB", { timeZone: "UTC" }),
+          createdAt: new Date().toLocaleString("en-GB", { timeZone: "Asia/Kolkata" }),
           userId: userData.$id,
           featuredImage: fileId,
           userName: userData.name, 
