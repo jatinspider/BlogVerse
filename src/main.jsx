@@ -12,6 +12,10 @@ import Signup from './pages/Signup'
 import EditPost from "./pages/EditPost";
 import Post from "./pages/Post";
 import AllPosts from "./pages/AllPosts";
+import Categories from './pages/Categories.jsx'
+import SearchResults from './pages/SearchResults.jsx'
+import CategoryPage from './pages/CategoryPage.jsx'
+
 
 const router = createBrowserRouter([
   {
@@ -68,6 +72,23 @@ const router = createBrowserRouter([
         {
             path: "/posts/:slug",
             element: <Post />,
+        },
+        {
+            path: "/Categories",
+            element: (
+                <AuthLayout authentication>
+                    {" "}
+                    <Categories />
+                </AuthLayout>
+            ),
+        },
+        {
+            path: "/Categories/:categoryTitle",
+            element: <CategoryPage />,
+        },
+        {
+            path :"/search-results-for" ,
+            element :<SearchResults />
         }
     ],
 },

@@ -26,7 +26,7 @@ function AllPosts() {
     fetchPosts();
   }, []);
 
-  if (loading) return <div>Loading posts...</div>; 
+  if (loading) return <div className='w-full py-8 mt-4 text-center'>Loading posts...</div>; 
 
   return (
     <div className="py-8 w-full">

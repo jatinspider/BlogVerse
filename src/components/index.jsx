@@ -12,6 +12,7 @@ import RTE from "./RTE"
 import Button from "./Button"
 import AuthLayout from "./AuthLayout"
 import PostForm from "./post-form/PostForm";
+import Category from "./Category";
 
 
-export {Header,Footer,LogoComponenet,Container,Logoutbtn,Select,Input,Signup,Login,PostCard,RTE,AuthLayout,Button,PostForm};
+export {Header,Footer,LogoComponenet,Container,Logoutbtn,Select,Input,Signup,Login,PostCard,RTE,AuthLayout,Button,PostForm,Category};

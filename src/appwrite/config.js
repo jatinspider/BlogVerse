@@ -14,14 +14,14 @@ export class Service {
     this.storage = new Storage(this.client);
   }
   
-async createPost({title, slug, content, featuredImage, status, userId,userName,createdAt}) {
+async createPost({title, slug, content, featuredImage, status, userId,userName,createdAt,category}) {
     try {
-      console.log("Creating post with data:", {title, slug, content, featuredImage, status, userId,userName,createdAt});
+      console.log("Creating post with data:", {title, slug, content, featuredImage, status, userId,userName,createdAt,category});
       return await this.databases.createDocument(
         conf.appwriteDatabaseID,
         conf.appwriteCollectionID,
         slug,
-        {
+        { 
           title,
           content,
           featuredImage,
@@ -29,6 +29,7 @@ async createPost({title, slug, content, featuredImage, status, userId,userName,c
           userId,
           userName,
           createdAt,
+          category
         }
       );
     } catch (error) {
@@ -37,9 +38,9 @@ async createPost({title, slug, content, featuredImage, status, userId,userName,c
     }
   }
   
-  async updatePost(slug, {title, content, featuredImage, status,createdAt}) {
+  async updatePost(slug, {title, content, featuredImage, status,createdAt,category}) {
     try {
-      console.log("Updating post with data:", {slug, title, content, featuredImage, status,});
+      console.log("Updating post with data:", {slug, title, content, featuredImage, status,category});
       return await this.databases.updateDocument(
         conf.appwriteDatabaseID,
         conf.appwriteCollectionID,
@@ -50,6 +51,7 @@ async createPost({title, slug, content, featuredImage, status, userId,userName,c
           featuredImage,
           status,
           createdAt,
+          category
         }
       );
     } catch (error) {
@@ -143,6 +145,35 @@ async createPost({title, slug, content, featuredImage, status, userId,userName,c
             fileID
     ); 
   }
+  async SearchPosts(searchText) {
+    
+    const queries = [
+      Query.search("title", searchText),
+      Query.search("content", searchText),
+      Query.search("userName", searchText),
+    ];
+
+    return this.databases.listDocuments(
+      conf.appwriteDatabaseID,
+      conf.appwriteCollectionID,
+      queries.length > 1 ? [Query.or([...queries])] : queries
+    );
+}
+
+async Category(category) {
+  try {
+    return await this.databases.listDocuments(
+      conf.appwriteDatabaseID,
+      conf.appwriteCollectionID,
+      [Query.search("category", category)] // Use Query.equal for exact matches
+    );
+  } catch (error) {
+    console.error("Error fetching category:", error);
+    return false 
+  }
+}
+
+
 }
 
 const service = new Service()

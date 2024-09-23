@@ -1,12 +1,12 @@
 import { Container, Logoutbtn, LogoComponenet } from "../index";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector} from "react-redux";
 import { useState } from "react";
+import SearchBar from "../SearchBar";
 
 function Header() {
   const authStatus = useSelector((state) => state.auth.status);
   const userData = useSelector((state) => state.auth.userData); // Get userData from Redux
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); // To manage dropdown state
@@ -37,12 +37,13 @@ function Header() {
       slug: "/add-post",
       active: authStatus,
     },
+    {
+      name: "Categories",
+      slug: "/categories",
+      active: authStatus,
+    },
+    
   ];
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
-  };
 
   return (
     <header className="bg-[#002C54] py-4 shadow-lg fixed top-0 w-full z-40">
@@ -53,7 +54,7 @@ function Header() {
               <LogoComponenet width="70px" />
             </Link>
             <button
-              className="md:hidden text-[#C5001A]"
+              className="md:hidden text-[#C5001A] p-2"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               <svg
@@ -81,7 +82,7 @@ function Header() {
           >
             <li className="md:hidden flex justify-end">
               <button
-                className="text-[#C5001A] p-4"
+                className="text-[#C5001A] p-4 "
                 onClick={() => setIsMenuOpen(false)}
               >
                 <svg
@@ -104,7 +105,7 @@ function Header() {
               item.active ? (
                 <li key={item.name} className="flex">
                   <button
-                    onClick={() => navigate(item.slug)}
+                    onClick={() => {navigate(item.slug); setIsMenuOpen(false);}}
                     className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                   >
                     <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-[#083c69] rounded-md group-hover:bg-opacity-0">
@@ -115,16 +116,25 @@ function Header() {
               ) : null
             )}
           </ul>
-
+          {authStatus && userData && (
+            <SearchBar />
+          )}
           {/* User Profile Dropdown */}
           {authStatus && userData && (
+            
+           
             <div className="relative">
               {/* Round button with first letter of username */}
+             
               <button
-                className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white text-xl hover:bg-pink-950"
+                // className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center text-white text-xl hover:bg-pink-950"
+                className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-lg font-medium text-gray-900 rounded-full group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
               >
+                <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-[#083c69] rounded-full group-hover:bg-opacity-0">
                 {userData.name.charAt(0).toUpperCase()}
+                </span>
+                
               </button>
 
               {/* Dropdown Menu */}
@@ -155,3 +165,11 @@ export default Header;
 
 
 
+// <button
+// onClick={() => {navigate(item.slug); setIsMenuOpen(false);}}
+// className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800"
+// >
+// <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-[#083c69] rounded-md group-hover:bg-opacity-0">
+//   {item.name}
+// </span>
+// </button>

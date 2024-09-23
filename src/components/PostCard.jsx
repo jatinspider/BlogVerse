@@ -45,7 +45,7 @@ function PostCard({ $id, title, featuredImage, userName, createdAt }) {
     : "";
 
   return (
-    <Link to={`/posts/${$id}`}>
+    <Link to={`/posts/${$id} `}>
       <div className="bg-white rounded-lg shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl overflow-hidden">
         {imageUrl ? (
           <img
@@ -55,6 +55,7 @@ function PostCard({ $id, title, featuredImage, userName, createdAt }) {
           />
         ) : (
           <div className="w-full h-48 bg-gray-300 flex items-center justify-center text-gray-600">
+            
             <span className="text-sm font-medium">No Image Available</span>
           </div>
         )}
@@ -65,11 +66,11 @@ function PostCard({ $id, title, featuredImage, userName, createdAt }) {
 
           
           <div className="text-sm text-gray-500 mb-2">
-            <span>By {userName || "Unknown"}</span> |{" "}
-            <span>{createdAt ||"Unknown date"}</span>
+            <span>{userName ||""} </span>| {" "}
+            <span>{createdAt ||""}</span>
           </div>
 
-          <p className="text-gray-600 text-sm">Read more...</p>
+          <p className="text-gray-600 text-sm hover:text-blue-500 transition-colors duration-300">Read more...</p>
         </div>
       </div>
     </Link>
