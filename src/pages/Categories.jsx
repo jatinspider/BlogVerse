@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Category} from '../components';
+import { Container, Category } from '../components';
 
 function Categories() {
   const categories = [
@@ -13,11 +13,17 @@ function Categories() {
   ];
 
   return (
-    <div className="py-8 w-full">
+    <div className="py-8 w-full bg-gray-50">
       <Container>
-        <div className="columns-1 sm:columns-2 md:columns-3 gap-4">
+        <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
+          Explore Categories
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {categories.map((category, index) => (
-            <div key={index} className="break-inside-avoid mb-4 bg-white shadow-lg rounded-lg overflow-hidden">
+            <div
+              key={index}
+              className="bg-white shadow-md rounded-lg overflow-hidden transform transition duration-300 hover:scale-105 hover:shadow-xl"
+            >
               <Category title={category.title} featuredImage={category.featuredImage} />
             </div>
           ))}
