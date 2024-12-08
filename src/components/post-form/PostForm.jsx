@@ -1,32 +1,52 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Input, Button, RTE, Select as Select } from "../index";
+import { Input, Button, RTE, Select } from "../index";  // Import necessary components
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import appwriteService from "../../appwrite/config";
-import { useNavigate } from "react-router-dom";
 
 function PostForm({ post }) {
-  const { register, handleSubmit, watch, setValue, control, getValues } = useForm({
+  const { register, handleSubmit, setValue, control, getValues, watch } = useForm({
     defaultValues: {
       title: post?.title || "",
       slug: post?.slug || "",
       content: post?.content || "",
       status: post?.status || "active",
-      categories: post?.categories || "", 
+      categories: post?.category || "", // Update category field if present
     },
   });
   const navigate = useNavigate();
   const userData = useSelector((state) => state.auth.userData);
   const [file, setFile] = useState(null);
-  const categoryOptions = [
-    { value: 'Technology', label: 'Technology' },
-    { value: 'Health', label: 'Health' },
-    { value: 'Travel', label: 'Travel' },
-    { value: 'Education', label: 'Education' },
-    { value: 'Lifestyle', label: 'Lifestyle' },
-    { value: 'Food', label: 'Food' },
-];
 
+  // Transform slug based on title
+  const slugTransform = (value) => {
+    if (value && typeof value === 'string') return value.trim().replace(/ /g, "-");
+    return '';
+  };
+
+  // Automatically update slug when title changes
+  useEffect(() => {
+    if (post) {
+      setValue("title", post.title);
+      setValue("slug", post.slug || slugTransform(post.title)); // Set the slug from title or default
+      setValue("content", post.content);
+      setValue("status", post.status);
+      setValue("categories", post.category); // Update category value
+    }
+  }, [post, setValue]);
+
+  // Watch for title change and update slug dynamically
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name === 'title') {
+        setValue('slug', slugTransform(value.title), { shouldValidate: true });
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, setValue]);
+
+  // Handle form submission
   const submit = async (data) => {
     try {
       if (post) {
@@ -44,7 +64,7 @@ function PostForm({ post }) {
         // Update post with new data
         const dbpost = await appwriteService.updatePost(post.$id, {
           ...data,
-          createdAt: new Date().toLocaleString("en-GB", { timeZone: "Asia/Kolkata" ,hour12: true}), 
+          createdAt: new Date().toLocaleString("en-GB", { timeZone: "Asia/Kolkata", hour12: true }), 
         });
         if (dbpost) {
           navigate(`/posts/${dbpost.$id}`);
@@ -54,7 +74,7 @@ function PostForm({ post }) {
         const fileId = fileResponse ? fileResponse.$id : null;
         const dbPost = await appwriteService.createPost({
           ...data,
-          createdAt: new Date().toLocaleString("en-GB", { timeZone: "Asia/Kolkata" ,hour12: true}),
+          createdAt: new Date().toLocaleString("en-GB", { timeZone: "Asia/Kolkata", hour12: true }),
           userId: userData.$id,
           featuredImage: fileId,
           userName: userData.name, 
@@ -68,30 +88,18 @@ function PostForm({ post }) {
     }
   };
 
-  const slugTransform = useCallback((value) => {
-    if (value && typeof value === 'string') return value.trim().replace(/ /g, "-");
-    return '';
-  }, []);
-
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name === 'title') {
-        setValue('slug', slugTransform(value.title), { shouldValidate: true });
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch, slugTransform, setValue]);
-
   return (
     <form onSubmit={handleSubmit(submit)} className="flex flex-col md:flex-row flex-wrap">
       <div className="md:w-2/3 w-full px-2 mb-4 md:mb-0">
+        {/* Title Input */}
         <Input
           label="Title:"
           placeholder="Title"
           className="mb-4"
           {...register("title", { required: true })}
         />
+        
+        {/* Slug Input */}
         <Input
           label="Slug:"
           placeholder="Slug"
@@ -101,9 +109,13 @@ function PostForm({ post }) {
             setValue("slug", slugTransform(e.currentTarget.value), { shouldValidate: true });
           }}
         />
+
+        {/* Rich Text Editor for Content */}
         <RTE label="Content:" name="content" control={control} defaultValue={getValues("content")} />
       </div>
+      
       <div className="md:w-1/3 w-full px-2">
+        {/* Featured Image Input */}
         <Input
           label="Featured Image:"
           type="file"
@@ -120,21 +132,34 @@ function PostForm({ post }) {
             />
           </div>
         )}
-       <Select
-          options={['Technology', 'Health', 'Travel', 'Education', 'Lifestyle', 'Food']}
-          label="Status"
+
+        {/* Category Select */}
+        <Select
+          options={['Technology', 'Health', 'Travel', 'Education', 'Lifestyle', 'Food', 'Entertainment']}
+          label="Category"
           className="mb-4"
-          {...register("category", { required: true })}
+          {...register("categories", { required: true })}
         />
 
+        {/* Status Select */}
         <Select
           options={["active", "inactive"]}
           label="Status"
           className="mb-4"
           {...register("status", { required: true })}
         />
-       
 
+<div className="text-sm text-gray-500 mt-4">
+          <p><strong>Tips for better posts:</strong></p>
+          <ul className="list-disc pl-5">
+            <li>Ensure the title is clear and concise for better searchability.</li>
+            <li>Choose the correct category to help your post reach the right audience.</li>
+            <li>Be mindful of your post's status. Mark it as 'active' when ready to publish.</li>
+            <li>Use high-quality images for better engagement.</li>
+          </ul>
+        </div>
+
+        {/* Submit Button */}
         <Button type="submit" bgColor={post ? "bg-green-500" : undefined} className={`w-full ${post ? "hover:bg-green-400" : "hover:bg-[#1b4a74]"}`}>
           {post ? "Update" : "Submit"}
         </Button>
@@ -144,4 +169,3 @@ function PostForm({ post }) {
 }
 
 export default PostForm;
-
