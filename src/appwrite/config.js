@@ -86,18 +86,6 @@ async createPost({title, slug, content, featuredImage, status, userId,userName,c
         return false
     }
   }
-  // async getAllPosts(queries=[Query.equal("status","active")]){
-  //   try {
-  //       return await this.databases.listDocuments(
-  //           conf.appwriteDatabaseID,
-  //           conf.appwriteCollectionID,
-  //           queries,
-  //           );
-  //   } catch (error) {
-  //       console.log("appwrite service error in getAllPosts",error)  ;
-  //       return false
-  //   }
-  // }
   
   async getAllPosts(queries = [Query.equal("status", "active"),Query.limit(50)]) {
     try {

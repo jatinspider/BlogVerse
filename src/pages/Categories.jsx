@@ -5,9 +5,9 @@ function Categories() {
   const categories = [
     { title: 'Technology', featuredImage: 'Technology' },
     { title: 'Health', featuredImage: 'Health' },
-    { title: 'Travel', featuredImage: 'travel' },
-    { title: 'Education', featuredImage: '66ef0f1f001c778057a3' },
-    { title: 'Lifestyle', featuredImage: '66ef11f20031c63a8ffe' },
+    { title: 'Travel', featuredImage: 'Travel' },
+    { title: 'Education', featuredImage: 'Education' },
+    { title: 'Lifestyle', featuredImage: 'Lifestyle' },
     { title: 'Food', featuredImage: 'Food' },
   ];
 

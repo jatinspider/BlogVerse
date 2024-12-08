@@ -35,10 +35,6 @@ function CategoryPage() {
 
   return (
     <div className="py-8 w-full">
-      {/* <h2 className="text-xl font-bold">Posts in Category: "{categoryTitle}"</h2> */}
-      {/* <h1 class="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-teal-500 text-5xl font-black">
-      Posts in Category: "{categoryTitle}"
-      </h1> */}
       <h2 className="text-3xl font-extrabold text-gray-900 mb-6">
   <span className="text-blue-600">Posts in Category:</span> 
   <span className="text-gray-800"> "{categoryTitle}"</span>
