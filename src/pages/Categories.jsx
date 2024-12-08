@@ -9,7 +9,6 @@ function Categories() {
     { title: 'Education', featuredImage: 'Education' },
     { title: 'Lifestyle', featuredImage: 'Lifestyle' },
     { title: 'Food', featuredImage: 'Food' },
-    { title: 'Food', featuredImage: 'Food' },
     { title: 'Entertainment', featuredImage: 'Entertainment' },
   ];
 
