@@ -3,17 +3,18 @@ import { Editor } from "@tinymce/tinymce-react";
 import { Controller } from "react-hook-form";
 import conf from "../conf/conf";
 
-function RTE({ name, control, label, defaultvalue = "" }) {
+function RTE({ name, control, label, defaultValue = "" }) {
   return (
     <div className="w-full">
       {label && <label className="inline-block mb-1 pl-1">{label}</label>}
       <Controller
         name={name || "content"}
         control={control}
-        render={({ field: { onChange } }) => (
+        defaultValue={defaultValue} // Set default value for the field
+        render={({ field: { onChange, value } }) => (
           <Editor
-           apiKey={conf.TinyMCE_api}
-            initialValue={defaultvalue}
+            apiKey={conf.TinyMCE_api}
+            value={value || ""} // Ensure that TinyMCE gets the value from the form
             init={{
               height: 500,
               menubar: false,
@@ -37,18 +38,20 @@ function RTE({ name, control, label, defaultvalue = "" }) {
                 "code",
                 "help",
                 "wordcount",
-                "anchor",
               ],
               toolbar:
                 "undo redo | blocks | image | bold italic forecolor | alignleft aligncenter bold italic forecolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent |removeformat | help",
               content_style:
                 "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
             }}
-            onEditorChange={onChange}
+            onEditorChange={(content) => {
+              onChange(content); // Update react-hook-form with the editor's content
+            }}
           />
         )}
       />
     </div>
   );
 }
+
 export default RTE;
